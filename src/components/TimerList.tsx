@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TimerItem } from './TimerItem';
 import { useTimerStore } from '../store/useTimerStore';
 import { EmptyState } from './EmptyState';
 
 export const TimerList: React.FC = () => {
-  const { timers } = useTimerStore();
+  const { timers, updateTimer } = useTimerStore();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateTimer();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [updateTimer]);
 
   return (
     <div className="space-y-4 min-h-[400px]">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Clock } from 'lucide-react';
 import { useTimerStore } from '../store/useTimerStore';
 import { validateTimerForm } from '../utils/validation';
+import { Button } from './common/Button';
 
 interface AddTimerModalProps {
   isOpen: boolean;
@@ -20,20 +21,20 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
     minutes: false,
     seconds: false,
   });
-  
+
   const { addTimer } = useTimerStore();
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateTimerForm({ title, description, hours, minutes, seconds })) {
       return;
     }
 
     const totalSeconds = hours * 3600 + minutes * 60 + seconds;
-    
+
     addTimer({
       title: title.trim(),
       description: description.trim(),
@@ -77,14 +78,14 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
             <Clock className="w-5 h-5 text-blue-600" />
             <h2 className="text-xl font-semibold">Add New Timer</h2>
           </div>
-          <button 
+          <button
             onClick={handleClose}
             className="p-1 hover:bg-gray-100 rounded-full transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -96,11 +97,10 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
               onChange={(e) => setTitle(e.target.value)}
               onBlur={() => setTouched({ ...touched, title: true })}
               maxLength={50}
-              className={` ${
-                touched.title && !isTitleValid
-                  ? 'border-red-500'
-                  : 'border-gray-300'
-              }`}
+              className={`w-full border p-2 rounded-md ${touched.title && !isTitleValid
+                ? 'border-red-500'
+                : 'border-gray-300'
+                }`}
               placeholder="Enter timer title"
             />
             {touched.title && !isTitleValid && (
@@ -112,7 +112,7 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
               {title.length}/50 characters
             </p>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Description
@@ -121,11 +121,11 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className=""
+              className="w-full border border-gray-300 p-2 rounded-md"
               placeholder="Enter timer description (optional)"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
               Duration <span className="text-red-500">*</span>
@@ -140,7 +140,7 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   value={hours}
                   onChange={(e) => setHours(Math.min(23, parseInt(e.target.value) || 0))}
                   onBlur={() => setTouched({ ...touched, hours: true })}
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 "
+                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 />
               </div>
               <div>
@@ -152,7 +152,7 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   value={minutes}
                   onChange={(e) => setMinutes(Math.min(59, parseInt(e.target.value) || 0))}
                   onBlur={() => setTouched({ ...touched, minutes: true })}
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2"
+                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 />
               </div>
               <div>
@@ -164,7 +164,7 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   value={seconds}
                   onChange={(e) => setSeconds(Math.min(59, parseInt(e.target.value) || 0))}
                   onBlur={() => setTouched({ ...touched, seconds: true })}
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 />
               </div>
             </div>
@@ -174,26 +174,21 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
               </p>
             )}
           </div>
-          
+
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              className={`px-4 py-2 text-sm font-medium text-white rounded-md transition-colors ${
-                isTitleValid && isTimeValid
-                  ? 'bg-blue-600 hover:bg-blue-700'
-                  : 'bg-blue-400 cursor-not-allowed'
-              }`}
               disabled={!isTitleValid || !isTimeValid}
             >
               Add Timer
-            </button>
+            </Button>
           </div>
         </form>
       </div>
