@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Clock } from 'lucide-react';
 import { useTimerStore } from '../store/useTimerStore';
 import { validateTimerForm } from '../utils/validation';
-import { Button } from './common/Button';
+import { ModalButton } from './common/ModalButton';
 import { Timer } from '../types/timer';
 import { toast } from 'sonner';
 
@@ -63,21 +63,39 @@ export const TimerFormModal: React.FC<TimerFormModalProps> = ({
 
         if (!isTitleValid) {
             toast.error('Invalid Title', {
-                description: 'Please enter a title between 1 and 50 characters'
+                description: 'Please enter a title between 1 and 50 characters',
+                action: {
+                    label: 'Close',
+                    onClick: () => {
+                        setTimeout(() => toast.dismiss(), 0);
+                    },
+                }
             });
             return;
         }
 
         if (!isTimeValid) {
             toast.error('Invalid Duration', {
-                description: 'Please set a duration greater than 0'
+                description: 'Please set a duration greater than 0',
+                action: {
+                    label: 'Close',
+                    onClick: () => {
+                        setTimeout(() => toast.dismiss(), 0);
+                    },
+                }
             });
             return;
         }
 
         if (!validateTimerForm({ title, description, hours, minutes, seconds })) {
             toast.error('Invalid Form', {
-                description: 'Please check all form fields and try again'
+                description: 'Please check all form fields and try again',
+                action: {
+                    label: 'Close',
+                    onClick: () => {
+                        setTimeout(() => toast.dismiss(), 0);
+                    },
+                }
             });
             return;
         }
@@ -92,7 +110,13 @@ export const TimerFormModal: React.FC<TimerFormModalProps> = ({
         if (isEditMode && timer) {
             editTimer(timer.id, timerData);
             toast.success('Timer Updated', {
-                description: 'Your timer has been updated successfully'
+                description: 'Your timer has been updated successfully',
+                action: {
+                    label: 'Close',
+                    onClick: () => {
+                        setTimeout(() => toast.dismiss(), 0);
+                    },
+                }
             });
         } else {
             addTimer({
@@ -101,7 +125,13 @@ export const TimerFormModal: React.FC<TimerFormModalProps> = ({
                 isRunning: false,
             });
             toast.success('Timer Added', {
-                description: 'Your new timer has been created successfully'
+                description: 'Your new timer has been created successfully',
+                action: {
+                    label: 'Close',
+                    onClick: () => {
+                        setTimeout(() => toast.dismiss(), 0);
+                    },
+                }
             });
         }
 
@@ -224,16 +254,16 @@ export const TimerFormModal: React.FC<TimerFormModalProps> = ({
                     </div>
 
                     <div className="flex justify-end gap-3 pt-4 border-t">
-                        <Button
+                        <ModalButton
                             type="button"
                             variant="secondary"
                             onClick={handleClose}
                         >
                             Cancel
-                        </Button>
-                        <Button type="submit">
+                        </ModalButton>
+                        <ModalButton type="submit">
                             {isEditMode ? 'Save Changes' : 'Add Timer'}
-                        </Button>
+                        </ModalButton>
                     </div>
                 </form>
             </div>

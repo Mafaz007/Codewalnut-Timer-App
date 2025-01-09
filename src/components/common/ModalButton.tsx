@@ -4,7 +4,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'secondary';
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const ModalButton: React.FC<ButtonProps> = ({
     variant = 'primary',
     className = '',
     disabled,
@@ -15,8 +15,8 @@ export const Button: React.FC<ButtonProps> = ({
 
     const variantStyles = {
         primary: `text-white ${disabled
-                ? 'bg-blue-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700'
+            ? 'bg-blue-400 cursor-not-allowed'
+            : 'bg-blue-600 hover:bg-blue-700'
             }`,
         secondary: 'text-gray-700 bg-gray-100 hover:bg-gray-200',
     };

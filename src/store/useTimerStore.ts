@@ -1,6 +1,7 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { Timer } from '../types/timer';
+import React from 'react';
 
 const STORAGE_KEY = 'timers';
 
@@ -67,6 +68,10 @@ const timerSlice = createSlice({
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state.timers));
       }
     },
+    clearTimers: (state) => {
+      state.timers = [];
+      localStorage.removeItem(STORAGE_KEY);
+    },
   },
 });
 
@@ -81,11 +86,23 @@ export const {
   updateTimer,
   restartTimer,
   editTimer,
+  clearTimers,
 } = timerSlice.actions;
 
 export const useTimerStore = () => {
   const dispatch = useDispatch();
   const timers = useSelector((state: { timers: Timer[] }) => state.timers);
+
+  React.useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY && e.newValue === null) {
+        dispatch(clearTimers());
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [dispatch]);
 
   return {
     timers,
@@ -95,5 +112,6 @@ export const useTimerStore = () => {
     updateTimer: () => dispatch(updateTimer()),
     restartTimer: (id: string) => dispatch(restartTimer(id)),
     editTimer: (id: string, updates: Partial<Timer>) => dispatch(editTimer({ id, updates })),
+    clearTimers: () => dispatch(clearTimers()),
   };
 };

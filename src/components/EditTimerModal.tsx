@@ -3,7 +3,7 @@ import { X, Clock } from 'lucide-react';
 import { useTimerStore } from '../store/useTimerStore';
 import { validateTimerForm } from '../utils/validation';
 import { Timer } from '../types/timer';
-import { Button } from './common/Button';
+import { ModalButton } from './common/ModalButton';
 
 interface EditTimerModalProps {
   isOpen: boolean;
@@ -185,19 +185,19 @@ export const EditTimerModal: React.FC<EditTimerModalProps> = ({
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button
+            <ModalButton
               type="button"
               variant="secondary"
               onClick={handleClose}
             >
               Cancel
-            </Button>
-            <Button
+            </ModalButton>
+            <ModalButton
               type="submit"
               disabled={!isTitleValid || !isTimeValid}
             >
               Save Changes
-            </Button>
+            </ModalButton>
           </div>
         </form>
       </div>

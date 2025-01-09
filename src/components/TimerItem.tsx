@@ -35,12 +35,16 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
             action: {
               label: 'Dismiss',
               onClick: () => {
-                timerAudio.stop();
-                toast.dismiss();
+                setTimeout(() => {
+                  timerAudio.stop();
+                  toast.dismiss();
+                }, 0);
               },
             },
             onAutoClose: () => {
-              timerAudio.stop();
+              setTimeout(() => {
+                timerAudio.stop();
+              }, 0);
             },
           });
         }
